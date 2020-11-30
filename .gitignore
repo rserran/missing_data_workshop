@@ -134,6 +134,8 @@ dmypy.json
 # Data files
 .idea/*
 .DS_Store
+.RData
+.Rhistory
 
 # .yml files
 ef_ccdt.yml
