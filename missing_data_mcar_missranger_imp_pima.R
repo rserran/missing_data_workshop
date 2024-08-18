@@ -6,7 +6,7 @@
 suppressMessages(library(tidyverse))
 library(naniar)
 library(missRanger)
-theme_set(theme_minimal())
+theme_set(theme_bw())
 
 # read dataset
 library(mlbench)
@@ -41,7 +41,7 @@ mcar_test(df_NA)
 # impute missing values with missRanger
 df_imp <- df_NA %>% 
      select(-diabetes) %>% 
-     missRanger()
+     missRanger(seed = 42)
 
 colMeans(is.na(df_imp))
 
@@ -50,6 +50,13 @@ plot(density(df_NA$glucose, na.rm = TRUE))
 lines(density(df_imp$glucose), color = 'red')
 legend('topright', c('original', 'imputed'), 
        col = c('black', 'red'), lty = 1)
+
+# add 'diabetes' column to df_imp
+df_imp$diabetes <- df_NA$diabetes
+
+# save df_imp to csv
+df_imp |> 
+     write_csv('df_imp_pima_missRanger.csv')
 
 # drop `body` and `home.dest`
 df <- df %>% 
